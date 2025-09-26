@@ -101,6 +101,21 @@ class MSSQLTodbtConverter:
         
         return config
     
+    def generate_security_implementation(self, model_name):
+        """Generate role-based security for regional access"""
+        
+        security_sql = f"""
+-- Regional Security Implementation for {model_name}
+-- Replaces MSSQL parameter-based security with dbt variables and Redshift RLS
+
+{{{{ validate_region_access(var('user_region')) }}}}
+
+-- Apply regional filter in WHERE clause
+WHERE 1=1
+{{{{ apply_regional_filter('s', 'region') }}}}
+"""
+        return security_sql
+    
     def calculate_automation_percentage(self, original_lines, converted_lines):
         """Calculate automation percentage achieved"""
         
@@ -125,11 +140,43 @@ def main():
     """Demonstrate conversion automation"""
     
     converter = MSSQLTodbtConverter()
-    print("🎯 Amazon Q Developer MSSQL to dbt Conversion Demo")
-    print("Average automation achieved: 75.0%")
-    print("Demonstrates enterprise migration capability")
     
-    return True
+    # Process all MSSQL procedures
+    mssql_dir = Path('/Users/tmwu/MSSQL-automation/mssql_original')
+    
+    conversion_results = []
+    
+    for sql_file in mssql_dir.glob('*.sql'):
+        print(f"Converting {sql_file.name}...")
+        
+        with open(sql_file, 'r') as f:
+            mssql_content = f.read()
+        
+        model_name = sql_file.stem.replace('sp_', '')
+        converted = converter.convert_procedure(mssql_content, model_name)
+        
+        # Calculate automation percentage
+        automation_pct = converter.calculate_automation_percentage(
+            mssql_content, converted
+        )
+        
+        conversion_results.append({
+            'procedure': sql_file.name,
+            'model': f"{model_name}.sql",
+            'automation_percentage': automation_pct
+        })
+        
+        print(f"  ✓ Automated {automation_pct:.1f}% of conversion")
+    
+    # Generate summary report
+    avg_automation = sum(r['automation_percentage'] for r in conversion_results) / len(conversion_results)
+    
+    print(f"\n🎯 CONVERSION SUMMARY")
+    print(f"Average automation achieved: {avg_automation:.1f}%")
+    print(f"Procedures converted: {len(conversion_results)}")
+    print(f"Manual validation needed: {100 - avg_automation:.1f}%")
+    
+    return conversion_results
 
 if __name__ == "__main__":
     main()
