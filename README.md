@@ -2,7 +2,7 @@
 
 ## 🎯 Business Value Demonstration
 
-This demonstration shows how **Amazon Q Developer can automate 70% of MSSQL stored procedure conversion to dbt models**, dramatically reducing migration timeline from months to weeks.
+This demonstration shows how **Amazon Q Developer can assist with MSSQL stored procedure conversion to dbt models**, helping to reduce migration timeline and standardize conversion patterns.
 
 ## 📁 Project Structure
 
@@ -27,18 +27,18 @@ MSSQL-automation/
 
 ## 🚀 Automation Capabilities Demonstrated
 
-### 1. **Syntax Translation (90% Automated)**
+### 1. **Syntax Translation**
 - MSSQL functions → Redshift equivalents
 - Parameter handling → dbt variables
 - Temp tables → CTEs
 - Date functions → Redshift syntax
 
-### 2. **Security Pattern Migration (80% Automated)**
+### 2. **Security Pattern Migration**
 - Parameter-based security → dbt variables + Redshift RLS
 - Role validation → dbt macros
 - Regional access controls → Row-level security
 
-### 3. **Performance Optimization (75% Automated)**
+### 3. **Performance Optimization**
 - Automatic sort key selection
 - Distribution key optimization
 - Materialization strategy
@@ -93,11 +93,11 @@ END
 
 ## 🎯 Business Impact
 
-| Metric | Manual Approach | Amazon Q Developer Automation |
-|--------|----------------|------------------------------|
-| **Timeline** | 3-6 months | 3-6 weeks |
+| Metric | Manual Approach | With Automation Assistance |
+|--------|----------------|----------------------------|
+| **Timeline** | 3-6 months | Reduced timeline with pattern automation |
 | **Developer Focus** | Syntax translation | Business logic validation |
-| **Error Rate** | High (manual errors) | Low (automated patterns) |
+| **Error Rate** | High (manual errors) | Lower (standardized patterns) |
 | **Consistency** | Variable | Standardized |
 | **Testing** | Manual setup | Automated dbt tests |
 
@@ -127,19 +127,20 @@ dbt test --select sales_reporting
 dbt test --select customer_analytics
 ```
 
-## 📈 Automation Metrics
+## 📈 Automation Capabilities
 
-### Achieved Automation Levels:
-- **Customer Analytics**: 72% automated
-- **Sales Reporting**: 68% automated  
-- **Inventory Management**: 75% automated
-- **Average**: **71.7% automation**
+### Demonstrated Automation Areas:
+- **Syntax Translation**: Automated pattern matching for common MSSQL constructs
+- **Configuration Generation**: Automatic dbt model configuration based on model type
+- **Security Implementation**: Template-based security macro generation
+- **Code Structure**: Standardized conversion from procedures to dbt models
 
-### Manual Validation Required (28.3%):
-- Business logic verification
-- Performance tuning validation
-- Security policy review
-- Data quality testing
+### Manual Work Still Required:
+- Business logic verification and validation
+- Performance tuning and optimization review
+- Security policy implementation and testing
+- Data quality validation and testing
+- Complex procedure logic analysis
 
 ## 🏗️ Architecture Benefits
 
@@ -176,13 +177,13 @@ dbt test --select customer_analytics
 
 ## 💡 Key Takeaways
 
-✅ **70%+ automation achieved** - Dramatically reduces manual effort  
+✅ **Automation assistance** - Reduces manual effort for common conversion patterns  
 ✅ **Consistent patterns** - Standardized conversion approach  
 ✅ **Built-in optimization** - Redshift performance tuning included  
 ✅ **Security modernization** - Role-based access controls  
 ✅ **Quality assurance** - Automated testing framework  
 
-This demonstration proves Amazon Q Developer can transform months of manual rewriting into weeks of automated conversion, allowing developers to focus on business value rather than syntax translation.
+This demonstration shows how Amazon Q Developer can assist with MSSQL to dbt conversion by automating common patterns, allowing developers to focus on business logic validation rather than syntax translation.
 
 ## 📄 License & Disclaimer
 
