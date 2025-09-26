@@ -1,0 +1,54 @@
+# dbt Schema Configuration with Role-Based Security
+# Amazon Q Developer automated conversion from MSSQL security patterns
+
+version: 2
+
+models:
+  - name: customer_analytics
+    description: "Customer segmentation and analytics model converted from sp_customer_analytics"
+    columns:
+      - name: customer_id
+        description: "Unique customer identifier"
+        tests:
+          - not_null
+          - unique
+      - name: customer_segment
+        description: "Customer value segmentation"
+        tests:
+          - accepted_values:
+              values: ['High Value', 'Medium Value', 'Low Value']
+      - name: total_revenue
+        description: "Total customer revenue"
+        tests:
+          - not_null
+    
+  - name: sales_reporting
+    description: "Regional sales reporting with security controls"
+    columns:
+      - name: product_id
+        description: "Product identifier"
+        tests:
+          - not_null
+      - name: region
+        description: "Sales region with access controls"
+        tests:
+          - accepted_values:
+              values: ['NORTH', 'SOUTH', 'EAST', 'WEST']
+      - name: monthly_revenue
+        description: "Monthly revenue by product"
+        tests:
+          - not_null
+
+# Role-based security implementation
+sources:
+  - name: raw_data
+    description: "Raw data sources with regional partitioning"
+    tables:
+      - name: customers
+        description: "Customer master data"
+      - name: orders
+        description: "Order transactions"
+      - name: products
+        description: "Product catalog"
+      - name: sales
+        description: "Sales transactions with regional security"
