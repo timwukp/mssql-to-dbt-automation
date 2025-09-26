@@ -72,6 +72,25 @@ WITH customer_orders AS (
 -- Optimized Redshift SQL
 ```
 
+### Example 2: Role-Based Security
+**Before (MSSQL):**
+```sql
+IF @user_region NOT IN ('NORTH', 'SOUTH', 'EAST', 'WEST')
+BEGIN
+    RAISERROR('Invalid region access', 16, 1);
+    RETURN;
+END
+```
+
+**After (dbt Macro):**
+```sql
+{% macro validate_region_access(user_region) %}
+  {% if user_region not in ['NORTH', 'SOUTH', 'EAST', 'WEST'] %}
+    {{ exceptions.raise_compiler_error("Invalid region access") }}
+  {% endif %}
+{% endmacro %}
+```
+
 ## 🎯 Business Impact
 
 | Metric | Manual Approach | Amazon Q Developer Automation |
@@ -81,6 +100,32 @@ WITH customer_orders AS (
 | **Error Rate** | High (manual errors) | Low (automated patterns) |
 | **Consistency** | Variable | Standardized |
 | **Testing** | Manual setup | Automated dbt tests |
+
+## 🔧 Running the Demonstration
+
+### 1. Execute Automation Script
+```bash
+cd /Users/tmwu/MSSQL-automation
+python conversion_automation.py
+```
+
+### 2. Deploy dbt Models
+```bash
+# Set regional security variables
+dbt run --vars '{"user_region": "NORTH", "start_date": "2024-01-01"}'
+
+# Run with different region
+dbt run --vars '{"user_region": "SOUTH", "warehouse_id": 2}'
+```
+
+### 3. Test Security Implementation
+```bash
+# Test regional access controls
+dbt test --select sales_reporting
+
+# Validate data quality
+dbt test --select customer_analytics
+```
 
 ## 📈 Automation Metrics
 
@@ -95,6 +140,39 @@ WITH customer_orders AS (
 - Performance tuning validation
 - Security policy review
 - Data quality testing
+
+## 🏗️ Architecture Benefits
+
+### Modern Data Platform Features:
+1. **Version Control**: All models in Git
+2. **Testing**: Automated data quality tests
+3. **Documentation**: Self-documenting models
+4. **Lineage**: Automatic data lineage tracking
+5. **Security**: Row-level security implementation
+6. **Performance**: Redshift-optimized queries
+
+### Migration Risk Reduction:
+- Standardized conversion patterns
+- Automated testing framework
+- Consistent security implementation
+- Performance optimization built-in
+
+## 🎯 Next Steps for Full Migration
+
+1. **Pilot Phase** (Weeks 1-2):
+   - Convert 3-5 representative procedures
+   - Validate automation accuracy
+   - Establish testing framework
+
+2. **Scale Phase** (Weeks 3-6):
+   - Batch convert remaining procedures
+   - Implement security policies
+   - Performance optimization
+
+3. **Validation Phase** (Weeks 7-8):
+   - Business logic validation
+   - User acceptance testing
+   - Production deployment
 
 ## 💡 Key Takeaways
 
@@ -121,3 +199,10 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - Adapt configurations to their infrastructure needs
 
 **NO SUPPORT**: This is demonstration code with no ongoing support or maintenance guarantees.
+
+### 🔒 Security Notice:
+While this code follows security best practices, users are responsible for:
+- Implementing proper access controls in their environment
+- Securing database connections and credentials
+- Following their organization's security policies
+- Regular security audits and updates
