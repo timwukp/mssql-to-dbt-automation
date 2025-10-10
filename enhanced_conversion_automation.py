@@ -35,7 +35,10 @@ class UpdatedMSSQLTodbtConverter:
     def _init_conversion_patterns(self) -> Dict[str, str]:
         """Initialize conversion patterns with proper regex flags"""
         return {
-            # Remove MSSQL procedure syntax
+            # Remove MSSQL procedure syntax - with proper flags
+            r'CREATE\s+PROCEDURE\s+[\w\[\]\.]+.*?AS\s*BEGIN': '',
+            r'SET\s+NOCOUNT\s+ON;?': '',
+            r'END\s*$': '',
             r'CREATE\s+PROCEDURE\s+[\w\[\]\.]+.*?AS\s*BEGIN': '',
             r'SET\s+NOCOUNT\s+ON;?': '',
             r'END\s*$': '',
