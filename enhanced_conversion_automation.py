@@ -71,9 +71,16 @@ class UpdatedMSSQLTodbtConverter:
     
     def calculate_automation_percentage(self, original_content: str, converted_content: str) -> float:
         """Calculate realistic automation percentage"""
-        
-        # Count conversion patterns applied
+        # Count conversion patterns applied with timeout protection
         patterns_applied = 0
+        for pattern in self.conversion_patterns.keys():
+            try:
+                compiled_pattern = re.compile(pattern, re.IGNORECASE)
+                if compiled_pattern.search(original_content):
+                    patterns_applied += 1
+            except re.error:
+                # Skip invalid patterns
+                continue
         for pattern in self.conversion_patterns.keys():
             if re.search(pattern, original_content, re.IGNORECASE):
                 patterns_applied += 1
