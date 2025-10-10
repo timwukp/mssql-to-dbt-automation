@@ -1,0 +1,83 @@
+name: 'mssql_migration_enhanced'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'mssql_migration_enhanced'
+
+# These configurations specify where dbt should look for different types of files.
+model-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+seed-paths: ["data"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Model configurations
+models:
+  mssql_migration_enhanced:
+    # Default materialization
+    +materialized: table
+    
+    # Analytics models
+    analytics:
+      +materialized: table
+      +tags: ["analytics"]
+      # Redshift specific
+      +sort: ["created_at", "updated_at"]
+      +dist: "customer_id"
+      # Glue/Athena specific
+      +file_format: "parquet"
+      +partition_by: ["year", "month"]
+    
+    # Reporting models
+    reporting:
+      +materialized: view
+      +tags: ["reporting"]
+    
+    # Staging models
+    staging:
+      +materialized: view
+      +tags: ["staging"]
+
+# Global variables - addressing customer feedback on hardcoded values
+vars:
+  # Date range variables
+  start_date: '2023-01-01'
+  end_date: '2023-12-31'
+  
+  # Regional variables
+  region: null
+  user_region: null
+  
+  # Inventory variables
+  warehouse_id: 1
+  low_stock_threshold: 10
+  
+  # Reporting variables
+  report_month: 12
+  report_year: 2023
+  
+  # Platform-specific variables
+  target_platform: 'redshift'  # Options: redshift, glue, athena
+
+# Snapshot configurations
+snapshots:
+  mssql_migration_enhanced:
+    +target_schema: snapshots
+    +strategy: timestamp
+    +updated_at: updated_at
+
+# Test configurations
+tests:
+  +store_failures: true
+  +schema: test_failures
+
+# Documentation
+docs:
+  +node_color: "#8B4513"
