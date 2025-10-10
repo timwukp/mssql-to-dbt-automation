@@ -114,6 +114,14 @@ class UpdatedMSSQLTodbtConverter:
 def main():
     """Main conversion function with multi-platform support"""
     print("MSSQL to DBT Multi-Platform Converter")
+    
+    # Example usage
+    converter = UpdatedMSSQLTodbtConverter(TargetPlatform.REDSHIFT)
+    
+    # Add CLI argument parsing or file processing logic here
+    # For now, return success status
+    return True
+    print("MSSQL to DBT Multi-Platform Converter")
     return True
 
 if __name__ == "__main__":
