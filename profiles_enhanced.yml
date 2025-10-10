@@ -1,0 +1,65 @@
+# Updated profiles.yml supporting Glue, Athena, and Redshift
+# Multi-platform configuration for MSSQL to DBT migration
+
+mssql_migration_enhanced:
+  target: dev
+  outputs:
+    
+    # Development environment - Redshift
+    dev:
+      type: redshift
+      host: "{{ env_var('REDSHIFT_HOST') }}"
+      user: "{{ env_var('REDSHIFT_USER') }}"
+      password: "{{ env_var('REDSHIFT_PASSWORD') }}"
+      port: 5439
+      dbname: "{{ env_var('REDSHIFT_DBNAME') }}"
+      schema: dev_analytics
+      threads: 4
+      keepalives_idle: 0
+      search_path: "dev_analytics,public"
+      sslmode: require
+    
+    # Production environment - Redshift
+    prod_redshift:
+      type: redshift
+      host: "{{ env_var('REDSHIFT_HOST') }}"
+      user: "{{ env_var('REDSHIFT_USER') }}"
+      password: "{{ env_var('REDSHIFT_PASSWORD') }}"
+      port: 5439
+      dbname: "{{ env_var('REDSHIFT_DBNAME') }}"
+      schema: prod_analytics
+      threads: 8
+      keepalives_idle: 0
+      search_path: "prod_analytics,public"
+      sslmode: require
+    
+    # AWS Glue environment
+    prod_glue:
+      type: spark
+      method: session
+      schema: prod_analytics
+      host: "{{ env_var('GLUE_ENDPOINT') }}"
+      cluster: "{{ env_var('GLUE_CLUSTER_ID') }}"
+      connect_timeout: 60
+      connect_retries: 5
+    
+    # Amazon Athena environment  
+    prod_athena:
+      type: athena
+      s3_staging_dir: "{{ env_var('ATHENA_S3_STAGING_DIR') }}"
+      region_name: "{{ env_var('AWS_REGION') }}"
+      schema: prod_analytics
+      database: analytics_db
+      work_group: primary
+      num_retries: 3
+    
+    # Local testing with PostgreSQL
+    test:
+      type: postgres
+      host: localhost
+      user: postgres
+      password: postgres
+      port: 5432
+      dbname: test_analytics
+      schema: test_analytics
+      threads: 2
