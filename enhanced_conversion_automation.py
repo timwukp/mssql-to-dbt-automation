@@ -93,7 +93,10 @@ class UpdatedMSSQLTodbtConverter:
         # Calculate percentage
         total_complexity = patterns_applied + manual_interventions
         if total_complexity == 0:
-            return 90.0
+            return 0.0  # No automation if no patterns applied
+        
+        automation_percentage = (patterns_applied / total_complexity) * 100
+        return automation_percentage  # Return actual calculated percentage
         
         automation_percentage = (patterns_applied / total_complexity) * 100
         return automation_percentage  # Return actual calculated percentage
