@@ -1,0 +1,13 @@
+# MSSQL to DBT Automation Tool Dependencies
+# Minimal external dependencies for security and maintainability
+
+# YAML processing for DBT configuration files
+PyYAML>=6.0.3,<7.0.0
+
+# Note: All other dependencies are Python standard library:
+# - re (regex processing)
+# - os (file operations) 
+# - json (JSON handling)
+# - pathlib (path operations)
+# - typing (type hints)
+# - enum (enumerations)
