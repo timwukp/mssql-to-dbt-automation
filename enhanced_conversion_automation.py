@@ -5,11 +5,9 @@ Supports Glue, Athena, and Redshift targets
 """
 
 import re
-import os
-import json
 import yaml
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List
 from enum import Enum
 
 class TargetPlatform(Enum):
@@ -391,10 +389,10 @@ class UpdatedMSSQLTodbtConverter:
         # Calculate percentage
         total_complexity = patterns_applied + manual_interventions
         if total_complexity == 0:
-            return 95.0
+            return 90.0  # Base automation for simple cases
         
         automation_percentage = (patterns_applied / total_complexity) * 100
-        return min(automation_percentage, 95.0)  # Cap at 95% automation
+        return min(automation_percentage, 90.0)  # Realistic automation ceiling
 
 def main():
     """Main conversion function with multi-platform support"""
